@@ -38,7 +38,7 @@ public class AnnounceController {
 
         model.addAttribute("new_announce",new Announce()); /* used in form to add new Announce */
 
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByCode(principal.getName());
         List<Announce> announceList = announceService.findAllAnnounce();
         List<Announce> temp = new ArrayList<>();
         for (Announce announce: announceList){
@@ -57,7 +57,7 @@ public class AnnounceController {
         }
         model.addAttribute("timetable_model",temp2); /* find master's self timetables which accepted */
 
-        model.addAttribute("profile", userService.findByEmail(principal.getName())); /* used in navbar to to show User Profile */
+        model.addAttribute("profile", userService.findByCode(principal.getName())); /* used in navbar to to show User Profile */
         return "master/master_announcements";
     }
 
@@ -89,7 +89,7 @@ public class AnnounceController {
         }
         model.addAttribute("timetable_model",temp2);/* find all timetables which accepted */
 
-        model.addAttribute("profile", userService.findByEmail(principal.getName())); /* used in navbar to to show User Profile */
+        model.addAttribute("profile", userService.findByCode(principal.getName())); /* used in navbar to to show User Profile */
         return "admin/admin_announcements";
     }
 

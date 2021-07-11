@@ -41,7 +41,7 @@ public class TimeTableBellController {
         model.addAttribute("day_model",dayService.findAllDays());
         model.addAttribute("bell_model",bellService.findAllBells());
         model.addAttribute("timetablebell_model",timeTableBellService.findAllTimeTableBell());
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "admin/admin_timetablebell";
     }
 

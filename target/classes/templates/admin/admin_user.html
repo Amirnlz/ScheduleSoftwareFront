@@ -52,7 +52,7 @@
                             <div>
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                            <span th:text="${'Email: ' + profile.getCode()}"></span>
                         </a>
                     </li>
                     <li class="dropdown-menu-item">
@@ -171,8 +171,8 @@
                             <input type="text" class="textinput" th:field="*{lastname}" id="lastname" required>
                         </div>
                         <div>
-                            <label for="email">ایمیل:</label>
-                            <input type="email" class="textinput" th:field="*{email}" id="email" required>
+                            <label for="code">کد کاربری:</label>
+                            <input type="text" class="textinput" th:field="*{code}" id="code" required>
                         </div>
                         <div>
                             <label for="password">رمز عبور:</label>
@@ -223,7 +223,7 @@
                             <th>نام</th>
                             <th>نام خانوادگی</th>
                             <th>نوع کاربری</th>
-                            <th>ایمیل</th>
+                            <th>کد کاربری</th>
                             <th>رمز عبور</th>
                             <th>تاریخ تولد</th>
                             <th>عکس</th>
@@ -243,7 +243,7 @@
                                 <span th:if="${#strings.equals(user.getRoles().get(0), 'MASTER')}" class="not-accept-td-span">استاد</span>
                                 <span th:if="${#strings.equals(user.getRoles().get(0), 'STUDENT')}" class="waiting-td-span">دانشجو</span>
                             </td>
-                            <td th:text="${user.getEmail()}"></td>
+                            <td th:text="${user.getCode()}"></td>
                             <td th:text="${user.getPassword()}"></td>
                             <td th:text="${user.getBirthday()}"></td>
                             <td class="td-img"><img th:src="'/assets/usercover/' + ${user.getCover()}" alt="user-img" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'"/></td>

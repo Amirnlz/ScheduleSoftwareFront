@@ -29,7 +29,7 @@ public class CourseController {
     public String admin_course(Model model, Principal principal) {
         model.addAttribute("new_course", new Course()); /* used in form to add new Course */
         model.addAttribute("course_model", courseService.findAllCourses()); /* used in table to to show Course Information */
-        model.addAttribute("profile", userService.findByEmail(principal.getName())); /* used in navbar to to show User Profile */
+        model.addAttribute("profile", userService.findByCode(principal.getName())); /* used in navbar to to show User Profile */
         return "admin/admin_course";
     }
 

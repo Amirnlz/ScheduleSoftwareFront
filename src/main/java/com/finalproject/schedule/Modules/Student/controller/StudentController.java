@@ -36,14 +36,14 @@ public class StudentController {
 
     @RequestMapping(value = "/student_main")
     public String student_main(Model model, Principal principal){
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
 
         return "student/student_main";
     }
 
     @RequestMapping(value = "/student_choose", method = RequestMethod.GET)
     public String student_choose(Model model, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByCode(principal.getName());
         model.addAttribute("student_choose", new StudentCourse());
         List<StudentCourse> studentcourseList = studentcourseService.findAllStudentCourses();
         List<StudentCourse> temp = new ArrayList<>();
@@ -62,13 +62,13 @@ public class StudentController {
             }
         }
         model.addAttribute("timetable_model",temp2);
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "student/student_course";
     }
 
     @RequestMapping(value = "/student_choose/addcourse", method = RequestMethod.POST)
     public String addcourse(@ModelAttribute(name = "course") StudentCourse studentCourse, Principal principal) throws IOException, InvocationTargetException, IllegalAccessException {
-        studentCourse.setUser(userService.findByEmail(principal.getName()));
+        studentCourse.setUser(userService.findByCode(principal.getName()));
         studentcourseService.addCourse(studentCourse);
         return "redirect:/student_choose";
     }

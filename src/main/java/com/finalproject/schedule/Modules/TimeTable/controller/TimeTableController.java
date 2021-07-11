@@ -46,7 +46,7 @@ public class TimeTableController {
     public String TimeTable(Model model, Principal principal) {
 
         model.addAttribute("new_timetable",new TimeTable()); /* used in form to add new TimeTable */
-        User user = userService.findByEmail(principal.getName()); /* used in navbar to to show User Profile */
+        User user = userService.findByCode(principal.getName()); /* used in navbar to to show User Profile */
 
         List<MasterCourse> mastercourseList = mastercourseService.findAllMasterCourses();
         List<MasterCourse> temp = new ArrayList<>();
@@ -67,13 +67,13 @@ public class TimeTableController {
             }
         }
         model.addAttribute("timetable_model",temp2);
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "master/master_timetable";
     }
 
     @RequestMapping(value = "/master_timetable/addtimetable", method = RequestMethod.POST)
     public String addtimetable(@ModelAttribute TimeTable timetable, Principal principal) throws IOException, InvocationTargetException, IllegalAccessException {
-        timetable.setUser(userService.findByEmail(principal.getName()));
+        timetable.setUser(userService.findByCode(principal.getName()));
         timetable.setAcceptance(2);
         timetableService.registerTimeTable(timetable);
         return "redirect:/master_timetable";
@@ -89,17 +89,6 @@ public class TimeTableController {
     @RequestMapping(value = {"/admin_timetable/delete/{id}"}, method = RequestMethod.GET)
     public String admin_delete(@PathVariable("id") int id) {
         timetableService.deleteById(id);
-        return "redirect:/admin_timetable";
-    }
-
-    @RequestMapping(value = {"/admin_timetable/delete"}, method = RequestMethod.GET)
-    public String admin_delete_all(@PathVariable("id") int id) {
-        List<TimeTable> timetableList = timetableService.findAllTimeTables();
-        for(TimeTable timeTable: timetableList){
-            if(timeTable.getAcceptance()==0){
-                timetableService.deleteById(timeTable.getId());
-            }
-        }
         return "redirect:/admin_timetable";
     }
 
@@ -134,7 +123,7 @@ public class TimeTableController {
     public String admin_timetable(Model model, Principal principal) {
         model.addAttribute("new_classnumber", new TimeTable());
         model.addAttribute("timetable_model", timetableService.findAllTimeTables());
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "admin/admin_timetable";
     }
 

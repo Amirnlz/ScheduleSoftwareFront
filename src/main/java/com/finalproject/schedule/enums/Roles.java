@@ -1,15 +1,9 @@
 package com.finalproject.schedule.enums;
 
-import org.springframework.security.core.GrantedAuthority;
-
-public enum Roles implements GrantedAuthority {
+public enum Roles {
 
     ADMIN,
     MASTER,
-    STUDENT;
+    STUDENT
 
-    @Override
-    public String getAuthority() {
-        return this.name();
-    }
 }

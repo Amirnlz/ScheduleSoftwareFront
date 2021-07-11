@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=4}">
 </head>
 <body class="overlay-scrollbar">
+<div id="site-landing"></div>
 <!-- navbar -->
 <div class="navbar">
     <!-- form -->
@@ -50,7 +51,7 @@
                             <div>
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                            <span th:text="${'Email: ' + profile.getCode()}"></span>
                         </a>
                     </li>
                     <li class="dropdown-menu-item">
@@ -260,6 +261,9 @@
         }
 
 </script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
 <!-- end import script -->
 </body>
 </html>

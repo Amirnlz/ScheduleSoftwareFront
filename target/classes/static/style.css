@@ -1,3 +1,18 @@
+@font-face {
+    font-family: IRANSansWeb;
+    src: url('fonts/IRANSansWeb.ttf') format('ttf');
+}
+
+@font-face {
+    font-family: Kalameh;
+    src: url('fonts/Kalameh_regular.ttf') format('ttf');
+}
+
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/Vazir.ttf') format('ttf');
+}
+
 :root {
 	--primary-color: #4834d4;
 	--success-color: #6ab04c;
@@ -59,18 +74,6 @@
 
 a{
    text-decoration: none;
-}
-@font-face {
-	font-family: Kalameh;
-	src: url("fonts/Kalameh_Regular.ttf");
-}
-@font-face {
-	font-family: Vazir;
-	src: url("fonts/Vazir.ttf");
-}
-@font-face {
-	font-family: IransansWeb;
-	src: url("fonts/IRANSansWeb.ttf");
 }
 
 body {
