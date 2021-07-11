@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ورود به سیستم</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=2}">
+</head>
+<body dir="rtl" class="login_body">
+<div id="site-landing"></div>
+<div class="login-page login-role-page">
+    <div class="form">
+        <div class="login-header">
+            <h3>ورود به سیستم</h3>
+            <p>نوع کاربری خود را جهت ورود به سیستم انتخاب کنید!</p>
+            <div class="role-box">
+                <a class="role" href="/admin_main">
+                    ادمین
+                </a>
+                <a class="role" href="/master_main">
+                    استاد
+                </a>
+                <a class="role" href="/student_main">
+                    دانشجو
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+</body>
+</html>

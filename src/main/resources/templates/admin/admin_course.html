@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>دروس دانشگاه</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=1}">
+</head>
+<body class="overlay-scrollbar">
+<div id="site-landing"></div>
+<!-- navbar -->
+<div class="navbar">
+    <!-- form -->
+    <form class="navbar-search">
+        <label for="search"></label>
+        <input type="text" name="Search" id="search" onkeyup="myFunction()" class="navbar-search-input" placeholder="...جستجو بر اساس شماره درس">
+        <i class="fas fa-search"></i>
+    </form>
+    <!-- end form -->
+    <!-- nav right -->
+    <ul class="navbar-nav nav-right">
+        <li class="nav-item mode">
+            <a class="nav-link" onclick="switchTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item avt-wrapper">
+            <div class="avt dropdown">
+                <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
+                <ul id="user-menu" class="dropdown-menu">
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <span th:text="${profile.getName() + ' ' + profile.getLastname()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a href="/logout" class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item burger">
+            <a class="nav-link">
+                <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- end nav right -->
+</div>
+<!-- end navbar -->
+<!-- sidebar -->
+<div class="sidebar">
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="/admin_main" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>
+						صفحه اصلی
+                </span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Users" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>کاربران دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Courses" class="sidebar-nav-link active">
+                <div>
+                    <i class="fas fa-book"></i>
+                </div>
+                <span>دروس دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_timetable" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-play"></i>
+                </div>
+                <span>اجرای الگوریتم</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_announcements" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <span>اطلاعیه ها</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Days" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <span>روز های کاری</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Bells" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bell"></i>
+                </div>
+                <span>زنگ های درسی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/TimeTableBell" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-clock"></i>
+                </div>
+                <span>جدول زمان بندی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/logout" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span>خروج از سیستم</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+<!-- main content -->
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <form enctype="multipart/form-data" dir="rtl" class="add-form" method="post" th:action="@{/Courses/addcourse}" th:object="${new_course}">
+                        <div>
+                            <label for="title">نام درس:</label>
+                            <input type="text" class="textinput" th:field="*{Title}" id="title" required>
+                        </div>
+                        <div>
+                            <label for="coursenumber">شماره درس:</label>
+                            <input type="number" class="textinput" th:field="*{CourseNumber}" id="coursenumber" required>
+                        </div>
+                        <div>
+                            <label for="unitscount">تعداد واحد:</label>
+                            <select class="selectpicker" id="unitscount" th:field="*{UnitsCount}">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="term">ترم:</label>
+                            <select class="selectpicker" id="term" th:field="*{Term}">
+                                <option value="0">0(درس عمومی)</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                        </div>
+                        <button>ثبت درس جدید</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card" dir="rtl">
+                <div class="card-header">
+                    <h3>
+                        لیست دروس
+                    </h3>
+                    <i class="fas fa-print" onclick="printDiv()"></i>
+                    <i class="fas fa-file-csv" onclick="exportData()" style="margin-left: 30px;"></i>
+                </div>
+                <div class="card-content">
+                    <table id="myTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>شماره درس</th>
+                            <th>نام درس</th>
+                            <th>تعداد واحد</th>
+                            <th>ترم</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="course,state : ${course_model}">
+                            <td th:text="${state.count}"></td>
+                            <td th:text="${course.getCourseNumber()}"></td>
+                            <td th:text="${course.getTitle()}"></td>
+                            <td th:text="${course.getUnitsCount()}"></td>
+                            <td>
+                                <span th:if="${course.getTerm() == 0}" class="term-zero-td-span">عمومی</span>
+                                <span th:if="${course.getTerm() == 1}" class="term-one-td-span">1</span>
+                                <span th:if="${course.getTerm() == 2}" class="term-two-td-span">2</span>
+                                <span th:if="${course.getTerm() == 3}" class="term-three-td-span">3</span>
+                                <span th:if="${course.getTerm() == 4}" class="term-four-td-span">4</span>
+                                <span th:if="${course.getTerm() == 5}" class="term-five-td-span">5</span>
+                                <span th:if="${course.getTerm() == 6}" class="term-six-td-span">6</span>
+                                <span th:if="${course.getTerm() == 7}" class="term-seven-td-span">7</span>
+                                <span th:if="${course.getTerm() == 8}" class="term-eight-td-span">8</span>
+                            </td>
+                            </td>
+                            <td>
+                                <a th:href="@{/Courses/delete/{id}(id=${course.getCourseNumber()})}">
+                                    <input type="image" alt="delete-img" src="assets/clear.svg" class="deleteButton" title="حذف درس">
+                                </a>
+                                <input type="image" alt="edit-img" src="assets/edit.svg" class="editButton" title="تغییر درس">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end main content -->
+<!-- import script -->
+<script src="index.js"></script>
+<script>
+		function myFunction() {
+
+		  var input, filter, table, tr, td, i, txtValue;
+		  input = document.getElementById("search");
+		  filter = input.value.toUpperCase();
+		  table = document.getElementById("myTable");
+		  tr = table.getElementsByTagName("tr");
+
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[1];
+			if (td) {
+			  txtValue = td.textContent || td.innerText;
+			  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			  } else {
+				tr[i].style.display = "none";
+			  }
+			}
+		  }
+		}
+
+        function printDiv() {
+                var divToPrint=document.getElementById('myTable');
+                newWin= window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+                }s
+</script>
+<script>
+    function exportData(){
+    var table = document.getElementById("myTable");
+
+    var rows =[];
+
+
+    for(var i=0,row; row = table.rows[i];i++){
+
+        column1 = row.cells[1].innerText;
+        column2 = row.cells[2].innerText;
+        column3 = row.cells[3].innerText;
+        column4 = row.cells[4].innerText;
+
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Stock_Price_Report.csv");
+        document.body.appendChild(link);
+        link.click();
+}
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+<!-- end import script -->
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>کاربران دانشگاه</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=4}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/pikaday.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/theme.css}">
+</head>
+<body class="overlay-scrollbar">
+<div id="site-landing"></div>
+<!-- navbar -->
+<div class="navbar">
+    <!-- form -->
+    <form class="navbar-search">
+        <label for="search"></label>
+        <input type="text" name="Search" id="search" onkeyup="myFunction()" class="navbar-search-input" placeholder="...جستجو بر اساس کدملی">
+        <i class="fas fa-search"></i>
+    </form>
+    <!-- end form -->
+    <!-- nav right -->
+    <ul class="navbar-nav nav-right">
+        <li class="nav-item mode">
+            <a class="nav-link" onclick="switchTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item avt-wrapper">
+            <div class="avt dropdown">
+<!--                <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">-->
+                <ul id="user-menu" class="dropdown-menu">
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+<!--                            <span th:text="${profile.getName() + ' ' + profile.getLastname()}"></span>-->
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+<!--                            <span th:text="${'Email: ' + profile.getEmail()}"></span>-->
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a href="/logout" class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item burger">
+            <a class="nav-link">
+                <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- end nav right -->
+</div>
+<!-- end navbar -->
+<!-- sidebar -->
+<div class="sidebar">
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="/admin_main" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>
+						صفحه اصلی
+                </span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Users" class="sidebar-nav-link active">
+                <div>
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>کاربران دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Courses" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-book"></i>
+                </div>
+                <span>دروس دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_timetable" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-play"></i>
+                </div>
+                <span>اجرای الگوریتم</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_announcements" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <span>اطلاعیه ها</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Days" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <span>روز های کاری</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Bells" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bell"></i>
+                </div>
+                <span>زنگ های درسی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/TimeTableBell" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-clock"></i>
+                </div>
+                <span>جدول زمان بندی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/logout" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span>خروج از سیستم</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+<!-- main content -->
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <form enctype="multipart/form-data" dir="rtl" class="add-form" method="post" th:action="@{/Users/register}" th:object="${new_user}">
+                        <div>
+                            <label for="name">نام:</label>
+                            <input type="text"  class="textinput" th:field="*{name}" id="name" required>
+                        </div>
+                        <div>
+                            <label for="lastname">نام خانوادگی:</label>
+                            <input type="text" class="textinput" th:field="*{lastname}" id="lastname" required>
+                        </div>
+                        <div>
+                            <label for="email">ایمیل:</label>
+                            <input type="email" class="textinput" th:field="*{email}" id="email" required>
+                        </div>
+                        <div>
+                            <label for="password">رمز عبور:</label>
+                            <input type="password" class="textinput" th:field="*{password}" id="password" minlength="4" required>
+                        </div>
+                        <div>
+                            <label for="codemelli">کدملی:</label>
+                            <input type="number" class="textinput" th:field="*{id}" id="codemelli" minlength="10" maxlength="10" required>
+                        </div>
+                        <div>
+                            <label for="birthday">تاریخ تولد:</label>
+                            <input type="text" class="textinput" th:field="*{birthday}" id="birthday" required>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <label for="role">نوع کاربری:</label>
+                            <select class="selectpicker" id="role" th:field="*{roles}" required>
+                                <option th:each="role : ${T(com.finalproject.schedule.enums.Roles).values()}"
+                                        th:text="${role}"
+                                        th:value="${role}"></option>
+                            </select>
+                        </div>
+                        <div style="margin-top: 30px;">
+                            <label for="cover">عکس:</label>
+                            <input type="file" th:field="*{file}" id="cover">
+                        </div>
+                        <button>ثبت کاربر جدید</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card" dir="rtl">
+                <div class="card-header">
+                    <h3>
+                        لیست کاربران
+                    </h3>
+                    <i class="fas fa-print" onclick="printDiv()"></i>
+                    <i class="fas fa-file-csv" onclick="exportData()" style="margin-left: 30px;"></i>
+                </div>
+                <div class="card-content">
+                    <table id="myTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>کد ملی</th>
+                            <th>نام</th>
+                            <th>نام خانوادگی</th>
+                            <th>نوع کاربری</th>
+                            <th>ایمیل</th>
+                            <th>رمز عبور</th>
+                            <th>تاریخ تولد</th>
+                            <th>عکس</th>
+                            <th>ایجاد شده در</th>
+                            <th>بروزرسانی شده در</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user,state : ${user_model}">
+                            <td th:text="${state.count}"></td>
+                            <td th:text="${user.getId()}"></td>
+                            <td th:text="${user.getName()}"></td>
+                            <td th:text="${user.getLastname()}"></td>
+                            <td>
+                                <span th:if="${#strings.equals(user.getRoles().get(0), 'ADMIN')}" class="accept-td-span">ادمین</span>
+                                <span th:if="${#strings.equals(user.getRoles().get(0), 'MASTER')}" class="not-accept-td-span">استاد</span>
+                                <span th:if="${#strings.equals(user.getRoles().get(0), 'STUDENT')}" class="waiting-td-span">دانشجو</span>
+                            </td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td th:text="${user.getPassword()}"></td>
+                            <td th:text="${user.getBirthday()}"></td>
+                            <td class="td-img"><img th:src="'/assets/usercover/' + ${user.getCover()}" alt="user-img" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'"/></td>
+                            <td th:text="${#temporals.format(user.getCreatedAt(),'HH:mm:ss - yyyy/MM/dd')}"></td>
+                            <td th:text="${#temporals.format(user.getUpdatedAt(),'HH:mm:ss - yyyy/MM/dd')}"></td>
+                            <td>
+                                    <a th:href="@{/Users/delete/{id}(id=${user.getId()})}">
+                                        <input type="image" alt="delete-img" src="assets/clear.svg" class="deleteButton" title="حذف کاربر">
+                                    </a>
+                                <input type="image" alt="edit-img" src="assets/edit.svg" class="editButton" title="تغییر رمز">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end main content -->
+<!-- import script -->
+<script src="index.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/jalali-moment.js"></script>
+<script src="js/pikaday.js"></script>
+<script src="js/app.js"></script>
+<script>
+		function myFunction() {
+
+            let input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+		}
+
+        function printDiv() {
+                var divToPrint=document.getElementById('myTable');
+                newWin= window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+                }
+
+</script>
+<script>
+    function exportData(){
+    var table = document.getElementById("myTable");
+
+    var rows =[];
+
+
+    for(var i=0,row; row = table.rows[i];i++){
+
+        column1 = row.cells[1].innerText;
+        column2 = row.cells[2].innerText;
+        column3 = row.cells[3].innerText;
+        column4 = row.cells[4].innerText;
+        column5 = row.cells[5].innerText;
+        column6 = row.cells[6].innerText;
+        column7 = row.cells[7].innerText;
+        column8 = row.cells[8].innerText;
+        column9 = row.cells[9].innerText;
+        column10 = row.cells[10].innerText;
+
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9,
+                column10
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Stock_Price_Report.csv");
+        document.body.appendChild(link);
+        link.click();
+}
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+<!-- end import script -->
+</body>
+</html>

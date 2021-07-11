@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ورود به سیستم</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=2}">
+</head>
+<body dir="rtl" class="login_body">
+<div id="site-landing"></div>
+<div class="login-page">
+    <div class="form">
+        <div class="login-header row" style="justify-content: space-between;">
+            <div>
+                <h3>ورود به سیستم</h3>
+                <p>جهت ورود به سیستم اطلاعات زیر را کامل کنید!</p>
+            </div>
+            <div>
+                <a href="/logout" title="بازگشت به صفحه اصلی"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
+        <form class="login-form" th:action="@{/login}" method="post">
+            <label>
+                <input name="email" type="text" placeholder="ایمیل کاربر" required />
+            </label>
+            <label>
+                <input name="password" type="password" placeholder="رمز عبور" required />
+            </label>
+            <button>ورود</button>
+        </form>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+</body>
+</html>

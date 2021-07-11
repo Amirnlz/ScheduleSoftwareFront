@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>اجرای الگوریتم</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=4}">
+</head>
+<body class="overlay-scrollbar">
+<div id="site-landing"></div>
+<!-- navbar -->
+<div class="navbar">
+    <!-- nav right -->
+    <ul class="navbar-nav nav-right">
+        <li class="nav-item mode">
+            <a class="nav-link" href="#" onclick="switchTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item avt-wrapper">
+            <div class="avt dropdown">
+                <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
+                <ul id="user-menu" class="dropdown-menu">
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <span th:text="${profile.getName() + ' ' + profile.getLastname()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a href="/logout" class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item burger">
+            <a class="nav-link">
+                <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- end nav right -->
+</div>
+<!-- end navbar -->
+<!-- sidebar -->
+<div class="sidebar">
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="/admin_main" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>
+						صفحه اصلی
+					</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Users" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>کاربران دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Courses" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-book"></i>
+                </div>
+                <span>دروس دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_timetable" class="sidebar-nav-link active">
+                <div>
+                    <i class="fas fa-play"></i>
+                </div>
+                <span>اجرای الگوریتم</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_announcements" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <span>اطلاعیه ها</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Days" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <span>روز های کاری</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Bells" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bell"></i>
+                </div>
+                <span>زنگ های درسی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/TimeTableBell" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-clock"></i>
+                </div>
+                <span>جدول زمان بندی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/logout" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span>خروج از سیستم</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+<!-- main content -->
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card" dir="rtl">
+                <div class="card-header row" style="justify-content: space-between; align-items: center;">
+                    <h3>
+                        لیست دروس ارایه شده توسط اساتید
+                    </h3>
+                    <i class="fas fa-print" onclick="printDiv()"></i>
+                    <i class="fas fa-file-csv" onclick="exportData()" style="margin-left: 30px;"></i>
+                    <form dir="rtl" class="add-form" method="post" th:action="@{/admin_timetable/start}" th:object="${new_classnumber}" onsubmit="yourJavacrit();">
+                        <input type="text" class="textinput" id="class-number" th:field="*{classnumber}" required placeholder="تعداد کلاس موجود">
+                        <button style="margin-left: 60px; margin-right: 19px;">
+                            شروع اجرای الگوریتم
+                        </button>
+                    </form>
+
+                </div>
+                <div class="card-content">
+                    <table id="myTable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>کد ملی</th>
+                            <th>نام استاد</th>
+                            <th>شماره درس</th>
+                            <th>نام درس</th>
+                            <th>تعداد واحد</th>
+                            <th>ترم</th>
+                            <th>روز</th>
+                            <th>زنگ</th>
+                            <th class="reason-th">وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="timetable,state : ${timetable_model}">
+                            <td th:text="${state.count}"></td>
+                            <td th:text="${timetable.getUser().getId()}"/>
+                            <td th:text="${timetable.getUser().getName() + ' ' + timetable.getUser().getLastname()}"/>
+                            <td th:text="${timetable.getCourse().getCourseNumber()}"/>
+                            <td th:text="${timetable.getCourse().getTitle()}"/>
+                            <td th:text="${timetable.getCourse().getUnitsCount()}"/>
+                            <td th:text="${timetable.getCourse().getTerm()}"/>
+                            <td th:text="${timetable.getTimetablebell().getDay().getLabel}"/>
+                            <td th:text="${timetable.getTimetablebell().getBell().getLabel}"/>
+                            <td class="reason-td">
+                                <span th:if="${timetable.getAcceptance() == 0}" class="not-accept-td-span">عدم تایید توسط سیستم</span>
+                                <span th:if="${timetable.getAcceptance() == 1}" class="accept-td-span">تایید شده</span>
+                                <span th:if="${timetable.getAcceptance() == 2}" class="waiting-td-span">در انتظار تایید...</span>
+                                <span th:text="${timetable.getReason()}" class="reason-td-span"></span>
+                            </td>
+                            <td class="operation-td">
+                                <a class="td-trash-a" th:href="@{/admin_timetable/delete/{id}(id=${timetable.getId()})}"><i class="fas fa-trash"></i></a>
+                                <a class="td-not-accept-a" th:href="@{/admin_timetable/not_accept/{id}(id=${timetable.getId()})}"><i class="fas fa-user-minus"></i></a>
+                                <a class="td-wait-a" th:href="@{/admin_timetable/wait/{id}(id=${timetable.getId()})}"><i class="fas fa-users-cog"></i></a>
+                                <a class="td-accept-a" th:href="@{/admin_timetable/accept/{id}(id=${timetable.getId()})}"><i class="fas fa-user-plus"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="tbl-delete-all">
+                        حذف کلاس های تایید نشده
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end main content -->
+<!-- import script -->
+<script src="index.js"></script>
+<script>
+		function myFunction() {
+
+		  var input, filter, table, tr, td, i, txtValue;
+		  input = document.getElementById("search");
+		  filter = input.value.toUpperCase();
+		  table = document.getElementById("myTable");
+		  tr = table.getElementsByTagName("tr");
+
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+			  txtValue = td.textContent || td.innerText;
+			  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			  } else {
+				tr[i].style.display = "none";
+			  }
+			}
+		  }
+		}
+
+        var table = document.getElementById('myTable');
+                    for(var i = 1; i < table.rows.length; i++){
+                        table.rows[i].onclick = function(){
+
+                             document.getElementById("label").value = this.cells[0].innerHTML;
+                             document.getElementById("dayOfWeek").value = this.cells[1].innerHTML;
+
+                        };
+                    }
+
+        function printDiv() {
+                var divToPrint=document.getElementById('myTable');
+                newWin= window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+                }
+</script>
+<script>
+    function exportData(){
+    var table = document.getElementById("myTable");
+
+    var rows =[];
+
+
+    for(var i=0,row; row = table.rows[i];i++){
+
+        column1 = row.cells[1].innerText;
+        column2 = row.cells[2].innerText;
+        column3 = row.cells[3].innerText;
+        column4 = row.cells[4].innerText;
+        column5 = row.cells[5].innerText;
+        column6 = row.cells[6].innerText;
+        column7 = row.cells[7].innerText;
+        column8 = row.cells[8].innerText;
+        column9 = row.cells[9].innerText;
+
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Stock_Price_Report.csv");
+        document.body.appendChild(link);
+        link.click();
+}
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+<!-- end import script -->
+</body>
+</html>

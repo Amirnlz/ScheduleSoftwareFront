@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>انتخاب واحد</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=4}">
+</head>
+<body class="overlay-scrollbar">
+<div id="site-landing"></div>
+<!-- navbar -->
+<div class="navbar">
+    <!-- form -->
+    <form class="navbar-search">
+        <label for="search"></label>
+        <input type="text" name="Search" id="search" onkeyup="myFunction()" class="navbar-search-input"
+               placeholder="...جستجو بر اساس نام شناسه درس">
+        <i class="fas fa-search"></i>
+    </form>
+    <!-- end form -->
+    <!-- nav right -->
+    <ul class="navbar-nav nav-right">
+        <li class="nav-item mode">
+            <a class="nav-link" onclick="switchTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item avt-wrapper">
+            <div class="avt dropdown">
+                <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
+                <ul id="user-menu" class="dropdown-menu">
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <span th:text="${profile.getName() + ' ' + profile.getLastname()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a href="/logout" class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item burger">
+            <a class="nav-link">
+                <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- end nav right -->
+</div>
+<!-- end navbar -->
+<!-- sidebar -->
+<div class="sidebar">
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="/student_main" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>
+						صفحه اصلی
+				</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/student_choose" class="sidebar-nav-link active">
+                <div>
+                    <i class="fas fa-mouse-pointer"></i>
+                </div>
+                <span>انتخاب واحد</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="logout" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span>خروج از سیستم</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+<!-- main content -->
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-content">
+                    <form enctype="multipart/form-data" dir="rtl" class="add-form" method="post" th:action="@{/student_choose/addcourse}" th:object="${student_choose}">
+                        <div>
+                            <label for="course">شناسه درس:</label>
+                            <select class="selectpicker" id="course" th:field="*{timetable}">
+                                <option value="" disabled="disabled" selected="selected">Select option</option>
+                                <option th:each="timetable : ${timetable_model}" th:text="${timetable.getId()}" th:value="${timetable.getId()}"></option>
+                            </select>
+                        </div>
+                        <button>انتخاب درس</button>
+                    </form>
+                    <div class="card-header" style="margin-top: 30px;">
+                    </div>
+                    <div class="card-content" dir="rtl">
+                        <table id="myTable">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>شناسه درس</th>
+                                <th>شماره درس</th>
+                                <th>نام درس</th>
+                                <th>تعداد واحد</th>
+                                <th>ترم</th>
+                                <th>نام استاد</th>
+                                <th>روز</th>
+                                <th>زنگ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="timetable,state : ${timetable_model}">
+                                <td th:text="${state.count}"></td>
+                                <td>
+                                    <span  th:text="${timetable.getId()}" class="waiting-td-span"></span>
+                                </td>
+                                <td th:text="${timetable.getCourse().getCourseNumber()}"></td>
+                                <td th:text="${timetable.getCourse().getTitle()}"></td>
+                                <td th:text="${timetable.getCourse().getUnitsCount()}"></td>
+                                <td>
+                                    <span th:if="${timetable.getCourse().getTerm() == 0}" class="term-zero-td-span">عمومی</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 1}" class="term-one-td-span">1</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 2}" class="term-two-td-span">2</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 3}" class="term-three-td-span">3</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 4}" class="term-four-td-span">4</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 5}" class="term-five-td-span">5</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 6}" class="term-six-td-span">6</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 7}" class="term-seven-td-span">7</span>
+                                    <span th:if="${timetable.getCourse().getTerm() == 8}" class="term-eight-td-span">8</span>
+                                </td>
+                                <td th:text="${timetable.getUser().getName() + ' ' + timetable.getUser().getLastname()}"></td>
+                                <td th:text="${timetable.getTimetablebell().getDay().getLabel()}"></td>
+                                <td th:text="${timetable.getTimetablebell().getBell().getLabel()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card" dir="rtl">
+                <div class="card-header">
+                    <h3>
+                        لیست دروس
+                    </h3>
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <div class="card-content">
+                    <table id="myTable2">
+                        <thead>
+                        <tr>
+                            <th>شناسه درس</th>
+                            <th>شماره درس</th>
+                            <th>نام درس</th>
+                            <th>تعداد واحد</th>
+                            <th>ترم</th>
+                            <th>نام استاد</th>
+                            <th>روز</th>
+                            <th>زنگ</th>
+                            <th>ایجاد شده در</th>
+                            <th>بروزرسانی در</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="student_choose : ${student_choose_model}">
+                            <td th:text="${student_choose.getTimetable().getId()}"></td>
+                            <td th:text="${student_choose.getTimetable().getCourse().getCourseNumber()}"></td>
+                            <td th:text="${student_choose.getTimetable().getCourse().getTitle()}"></td>
+                            <td th:text="${student_choose.getTimetable().getCourse().getUnitsCount()}"></td>
+                            <td th:text="${student_choose.getTimetable().getCourse().getTerm()}"></td>
+                            <td th:text="${student_choose.getTimetable().getUser().getName() + ' ' + student_choose.getTimetable().getUser().getLastname()}"></td>
+                            <td th:text="${student_choose.getTimetable().getTimetablebell().getDay().getLabel()}"></td>
+                            <td th:text="${student_choose.getTimetable().getTimetablebell().getBell().getLabel()}"></td>
+                            <td th:text="${#temporals.format(student_choose.getCreatedAt(),'HH:mm:ss - yyyy/MM/dd')}"></td>
+                            <td th:text="${#temporals.format(student_choose.getUpdatedAt(),'HH:mm:ss - yyyy/MM/dd')}"></td>
+                            <td>
+                                <a th:href="@{/student_choose/delete/{id}(id=${student_choose.getId()})}">
+                                    <input type="image" alt="delete-img" src="assets/clear.svg" class="deleteButton" title="حذف کاربر">
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end main content -->
+<!-- import script -->
+<script src="index.js"></script>
+<script>
+		function myFunction() {
+
+            let input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search");
+		  filter = input.value.toUpperCase();
+		  table = document.getElementById("myTable");
+		  tr = table.getElementsByTagName("tr");
+
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+			  txtValue = td.textContent || td.innerText;
+			  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			  } else {
+				tr[i].style.display = "none";
+			  }
+			}
+		  }
+		}
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
+<!-- end import script -->
+</body>
+</html>

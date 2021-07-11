@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>صفحه اصلی</title>
+
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/AT-pro-logo.png"/>
+
+    <!-- Import lib -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- End import lib -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css?version=5}">
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+    <script src="https://cdn.amcharts.com/lib/4/themes/frozen.js"></script>
+</head>
+<body class="overlay-scrollbar">
+<!-- navbar -->
+<div class="navbar">
+    <!-- nav right -->
+    <ul class="navbar-nav nav-right">
+        <li class="nav-item mode">
+            <a class="nav-link" onclick="switchTheme()">
+                <i class="fas fa-moon dark-icon"></i>
+                <i class="fas fa-sun light-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item avt-wrapper">
+            <div class="avt dropdown">
+                <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
+                <ul id="user-menu" class="dropdown-menu">
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <span th:text="${profile.getName() + ' ' + profile.getLastname()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown-menu-item">
+                        <a href="/logout" class="dropdown-menu-link">
+                            <div>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item burger">
+            <a class="nav-link">
+                <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- end nav right -->
+</div>
+<!-- end navbar -->
+<!-- sidebar -->
+<div class="sidebar">
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+            <a href="/admin_main" class="sidebar-nav-link active">
+                <div>
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>
+						صفحه اصلی
+				</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Users" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>کاربران دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Courses" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-book"></i>
+                </div>
+                <span>دروس دانشگاه</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_timetable" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-play"></i>
+                </div>
+                <span>اجرای الگوریتم</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/admin_announcements" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <span>اطلاعیه ها</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Days" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <span>روز های کاری</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/Bells" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-bell"></i>
+                </div>
+                <span>زنگ های درسی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/TimeTableBell" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-clock"></i>
+                </div>
+                <span>جدول زمان بندی</span>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="/logout" class="sidebar-nav-link">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span>خروج از سیستم</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- end sidebar -->
+<!-- main content -->
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-content row" style="flex-direction: column;">
+                    <div class="admin-main-card-header row">
+                        <h3 style="margin-left: 125px;">تعداد کاربر</h3>
+                        <h3 style="margin-left: 180px;">...تعداد زنگ های تعریف شده در روز</h3>
+                        <h3 style="margin-left: 90px;">تعداد روز های کاری انتخاب شده توسط اساتید</h3>
+                    </div>
+                    <div class="row">
+                        <div id="chartdiv"></div>
+                        <div id="chartdiv2"></div>
+                        <div id="chartdiv3"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card">
+                <div class="card-content row" style="flex-direction: column;">
+                    <div class="admin-main-card-header row">
+                        <h3>تعداد دانشجو دارای درس در این روز</h3>
+                        <h3>اطلاعیه ها</h3>
+                    </div>
+                    <div class="row">
+                        <div id="chartdiv4"></div>
+                        <div class="chat-box">
+                            <div th:each="announce : ${announce_model}">
+                                <div class="row">
+                                    <div class="avt dropdown chat-box-img">
+                                        <img th:src="'/assets/usercover/' + ${announce.getTimeTable().getUser().getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
+                                    </div>
+                                    <div>
+                                        <div class="message">
+                                            <div>
+                                                <div class="message-header row">
+                                                    <h1 th:text="${announce.getTimeTable().getUser().getName() + ' ' + announce.getTimeTable().getUser().getLastname()}"></h1>
+                                                    <a th:href="@{/admin_main_announcements/delete/{id}(id=${announce.getId()})}"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                                    <p th:text="${announce.getMessage()}"></p>
+                                            </div>
+                                            <div class="message-course" th:text="${announce.getTimeTable().getCourse().getTitle() + '( ' + announce.getTimeTable().getTimetablebell().getDay().getLabel() + ' : ' + announce.getTimeTable().getTimetablebell().getBell().getLabel() + ' )' }"></div>
+                                            <div class="message-date" th:text="${#temporals.format(announce.getUpdatedAt(),'HH:mm:ss - yyyy/MM/dd')}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-m-12 col-sm-12">
+            <div class="card" dir="rtl">
+                <div class="card-header">
+                    <h3>
+                        تعداد دانشجو
+                    </h3>
+                    <i class="fas fa-print" onclick="printDiv()"></i>
+                    <i class="fas fa-file-csv" onclick="exportData()" style="margin-left: 30px;"></i>
+                </div>
+                <div class="card-content">
+                    <table id="myTable">
+                        <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>شماره درس</th>
+                            <th>نام درس</th>
+                            <th>نام استاد</th>
+                            <th>روز</th>
+                            <th>زنگ</th>
+                            <th>تعداد دانشجو دارای این درس</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="timetable,state : ${timetable_model}">
+                            <td th:text="${state.count}"/>
+                            <td th:text="${timetable.getCourse().getCourseNumber()}"/>
+                            <td th:text="${timetable.getCourse().getTitle()}"/>
+                            <td th:text="${timetable.getUser().getName() + ' ' + timetable.getUser().getLastname()}"/>
+                            <td th:text="${timetable.getTimetablebell().getDay().getLabel()}"/>
+                            <td th:text="${timetable.getTimetablebell().getBell().getLabel()}"/>
+                            <td th:text="${studentcourseService_model.findstudentnumber(timetable).size()}"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end main content -->
+<!-- import script -->
+<style>
+#chartdiv, #chartdiv2, #chartdiv3,#chartdiv4 {
+  width: 50%;
+  height: 450px;
+}
+</style>
+<script src="index.js"></script>
+<script>
+
+am4core.ready(function() {
+am4core.useTheme(am4themes_animated);
+var chart = am4core.create("chartdiv", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0;
+
+chart.legend = new am4charts.Legend();
+
+chart.data = [
+  {
+    roles: "ادمین",
+    number: [[${admin_length}]]
+  },
+  {
+    roles: "استاد",
+    number: [[${master_length}]]
+  },
+  {
+    roles: "دانشجو",
+    number: [[${student_length}]]
+  }
+];
+
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "number";
+series.dataFields.category = "roles";
+
+});
+
+am4core.ready(function() {
+am4core.useTheme(am4themes_animated);
+var chart = am4core.create("chartdiv2", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0;
+
+chart.legend = new am4charts.Legend();
+
+chart.data = [
+  {
+    day: "شنبه",
+    number: [[${bell_num_in_shanbe}]]
+  },
+  {
+    day: "یکشنبه",
+    number: [[${bell_num_in_yekshanbe}]]
+  },
+  {
+    day: "دوشنبه",
+    number: [[${bell_num_in_doshanbe}]]
+  },
+  {
+    day: "سه شنبه",
+    number: [[${bell_num_in_seshanbe}]]
+  },
+  {
+    day: "چهارشنبه",
+    number: [[${bell_num_in_charshanbe}]]
+  },
+  {
+    day: "پنجشنبه",
+    number: [[${bell_num_in_panjshanbe}]]
+  },
+  {
+    day: "جمعه",
+    number: [[${bell_num_in_jome}]]
+  }
+];
+
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "number";
+series.dataFields.category = "day";
+
+});
+
+am4core.ready(function() {
+am4core.useTheme(am4themes_animated);
+var chart = am4core.create("chartdiv3", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0;
+
+chart.legend = new am4charts.Legend();
+
+chart.data = [
+  {
+    day: "شنبه",
+    number: [[${masters_in_shanbe}]]
+  },
+  {
+    day: "یکشنبه",
+    number: [[${masters_in_yekshanbe}]]
+  },
+  {
+    day: "دوشنبه",
+    number: [[${masters_in_doshanbe}]]
+  },
+  {
+    day: "سه شنبه",
+    number: [[${masters_in_seshanbe}]]
+  },
+  {
+    day: "چهارشنبه",
+    number: [[${masters_in_charshanbe}]]
+  },
+  {
+    day: "پنجشنبه",
+    number: [[${masters_in_panjshanbe}]]
+  },
+  {
+    day: "جمعه",
+    number: [[${masters_in_jome}]]
+  }
+];
+
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "number";
+series.dataFields.category = "day";
+
+});
+
+
+</script>
+<script>
+am4core.ready(function() {
+
+am4core.useTheme(am4themes_animated);
+
+var chart = am4core.create("chartdiv4", am4charts.XYChart3D);
+
+chart.data = [{
+  "day": "شنبه",
+  "number": [[${students_in_shanbe}]]
+}, {
+  "day": "یکشنبه",
+  "number": [[${students_in_yekshanbe}]]
+}, {
+  "day": "دوشنبه",
+  "number": [[${students_in_doshanbe}]]
+}, {
+  "day": "سه شنبه",
+  "number": [[${students_in_seshanbe}]]
+}, {
+  "day": "چهارشنبه",
+  "number": [[${students_in_charshanbe}]]
+}, {
+  "day": "پنجشنبه",
+  "number": [[${students_in_panjshanbe}]]
+}, {
+  "day": "جمعه",
+  "number": [[${students_in_jome}]]
+}];
+
+// Create axes
+let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "day";
+categoryAxis.renderer.labels.template.rotation = 270;
+categoryAxis.renderer.labels.template.hideOversized = false;
+categoryAxis.renderer.minGridDistance = 20;
+categoryAxis.renderer.labels.template.horizontalCenter = "right";
+categoryAxis.renderer.labels.template.verticalCenter = "middle";
+categoryAxis.tooltip.label.rotation = 270;
+categoryAxis.tooltip.label.horizontalCenter = "right";
+categoryAxis.tooltip.label.verticalCenter = "middle";
+
+let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+var series = chart.series.push(new am4charts.ColumnSeries3D());
+series.dataFields.valueY = "number";
+series.dataFields.categoryX = "day";
+series.name = "number";
+series.tooltipText = "{categoryX}: [bold]{valueY}[/]";
+series.columns.template.fillOpacity = .8;
+
+var columnTemplate = series.columns.template;
+columnTemplate.strokeWidth = 2;
+columnTemplate.strokeOpacity = 1;
+columnTemplate.stroke = am4core.color("#FFFFFF");
+
+columnTemplate.adapter.add("fill", function(fill, target) {
+  return chart.colors.getIndex(target.dataItem.index);
+})
+
+columnTemplate.adapter.add("stroke", function(stroke, target) {
+  return chart.colors.getIndex(target.dataItem.index);
+})
+
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.lineX.strokeOpacity = 0;
+chart.cursor.lineY.strokeOpacity = 0;
+
+}); // end am4core.ready()
+</script>
+<!-- end import script -->
+</body>
+</html>
