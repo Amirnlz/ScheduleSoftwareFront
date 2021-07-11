@@ -41,13 +41,13 @@ public class MasterController {
 
     @RequestMapping(value = "/master_main")
     public String master_main(Model model, Principal principal){
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "master/master_main";
     }
 
     @RequestMapping(value = "/master_course", method = RequestMethod.GET)
     public String course(Model model, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByCode(principal.getName());
         model.addAttribute("master_course", new MasterCourse()); /* used in form to add new MasterCourse */
         model.addAttribute("course_model",courseService.findAllCourses()); /* used in comboBox to to show all Courses */
         List<MasterCourse> mastercourseList = mastercourseService.findAllMasterCourses();
@@ -58,13 +58,13 @@ public class MasterController {
             }
         }
         model.addAttribute("master_course_model",temp); /* used in table to to show selected Courses */
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "master/master_course";
     }
 
     @RequestMapping(value = "/master_course/addcourse", method = RequestMethod.POST)
     public String addcourse(@ModelAttribute(name = "course") MasterCourse mastercourse, Principal principal) throws IOException, InvocationTargetException, IllegalAccessException {
-        mastercourse.setUser(userService.findByEmail(principal.getName()));
+        mastercourse.setUser(userService.findByCode(principal.getName()));
         mastercourseService.addMasterCourse(mastercourse);
         return "redirect:/master_course";
     }

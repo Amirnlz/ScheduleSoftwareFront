@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private UserRepository userRepository;
 
@@ -85,8 +82,8 @@ public class UserService implements UserDetailsService {
     }
 
     /* use when try to find user by email in principal (spring.security) */
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email);
+    public User findByCode(String code){
+        return userRepository.findByCode(code);
     }
 
     /* delete user by id */
@@ -123,8 +120,4 @@ public class UserService implements UserDetailsService {
         return page.toList();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
-    }
 }

@@ -34,7 +34,6 @@
             </a>
         </li>
         <li class="nav-item avt-wrapper">
-            <div id="site-landing"></div>
             <div class="avt dropdown">
                 <img th:src="'/assets/usercover/' + ${profile.getCover()}" alt="User image" class="dropdown-toggle" data-toggle="user-menu" onerror="this.onerror=null; this.src='https://www.gravatar.com/avatar/d18071b1-d6ae-49f3-ab5c-0eb5bfad628f?s=185&d=identicon&r;=PG'">
                 <ul id="user-menu" class="dropdown-menu">
@@ -51,7 +50,7 @@
                             <div>
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span th:text="${'Email: ' + profile.getEmail()}"></span>
+                            <span th:text="${'Email: ' + profile.getCode()}"></span>
                         </a>
                     </li>
                     <li class="dropdown-menu-item">

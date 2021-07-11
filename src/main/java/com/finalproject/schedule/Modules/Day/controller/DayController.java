@@ -35,7 +35,7 @@ public class DayController {
     public String day(Model model, Principal principal){
         model.addAttribute("new_day", new Day()); /* used in form to add new Day */
         model.addAttribute("day_model", dayService.findAllDays()); /* used in table to to show Label and dayOfWeek */
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "admin/admin_day";
     }
 

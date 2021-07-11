@@ -29,7 +29,7 @@ public class BellController {
     public String bell(Model model, Principal principal){
         model.addAttribute("new_bell", new Bell()); /* used in form to add new Bell */
         model.addAttribute("bell_model", bellService.findAllBells()); /* used in table to to show Label and bellOfDay */
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
         return "admin/admin_bell";
     }
 

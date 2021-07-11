@@ -4,25 +4,22 @@ import com.fasterxml.jackson.annotation.*;
 import com.finalproject.schedule.enums.Roles;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "user_tbl")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 
     @Id
     private int id;
 
     @Column(unique = true)
-    private String email;
+    private String code;
     private String password;
     private String name;
     private String lastname;
@@ -31,9 +28,9 @@ public class User implements Serializable, UserDetails {
 
     private boolean enabled = true;
 
-    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Roles.class)
     @CollectionTable(name = "authorities", joinColumns =
-    @JoinColumn(name = "email", referencedColumnName = "email"))
+    @JoinColumn(name = "code", referencedColumnName = "code"))
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private List<Roles> roles;
@@ -61,12 +58,12 @@ public class User implements Serializable, UserDetails {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCode() {
+        return code;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getPassword() {
@@ -109,6 +106,10 @@ public class User implements Serializable, UserDetails {
         this.cover = cover;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -144,35 +145,4 @@ public class User implements Serializable, UserDetails {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
 }

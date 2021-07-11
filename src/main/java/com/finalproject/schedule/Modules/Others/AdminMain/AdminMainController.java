@@ -45,7 +45,7 @@ public class AdminMainController {
 
     @RequestMapping(value = "/admin_main")
     public String admin_main(Model model, Principal principal) {
-        model.addAttribute("profile", userService.findByEmail(principal.getName()));
+        model.addAttribute("profile", userService.findByCode(principal.getName()));
 
         model.addAttribute("master_length", userService.findByRoles(Roles.MASTER.toString()).size());
         model.addAttribute("admin_length", userService.findByRoles(Roles.ADMIN.toString()).size());
