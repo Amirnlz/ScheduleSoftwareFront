@@ -92,17 +92,6 @@ public class TimeTableController {
         return "redirect:/admin_timetable";
     }
 
-    @RequestMapping(value = {"/admin_timetable/delete"}, method = RequestMethod.GET)
-    public String admin_delete_all() {
-        List<TimeTable> timetableList = timetableService.findAllTimeTables();
-        for(TimeTable timetable : timetableList){
-            if(timetable.getAcceptance()==0){
-                timetableService.deleteById(timetable.getId());
-            }
-        }
-        return "redirect:/admin_timetable";
-    }
-
     @RequestMapping(value = {"/admin_timetable/not_accept/{id}"}, method = RequestMethod.GET)
     public String admin_not_accept(@PathVariable("id") int id) throws IllegalAccessException, IOException, InvocationTargetException {
         TimeTable timetable = timetableService.findById(id);

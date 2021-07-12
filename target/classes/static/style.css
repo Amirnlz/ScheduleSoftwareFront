@@ -75,6 +75,16 @@
 a{
    text-decoration: none;
 }
+	src: url("fonts/Kalameh_Regular.ttf");
+}
+@font-face {
+	font-family: Vazir;
+	src: url("fonts/Vazir.ttf");
+}
+@font-face {
+	font-family: IransansWeb;
+	src: url("fonts/IRANSansWeb.ttf");
+}
 
 body {
 	font-family: Kalameh;

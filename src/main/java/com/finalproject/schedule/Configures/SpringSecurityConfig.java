@@ -41,20 +41,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/loginrole", "/style.css", "/index.js", "/css/**", "/js/**", "/assets/**", "/fontawesome-free/**")
+                .antMatchers("/loginrole", "/style.css", "/index.js", "/css/**", "/js/**", "/assets/**", "/fontawesome-free/**")
                 .permitAll()
 
 
                 .antMatchers("/Users/**", "/Courses/**", "/Days/**", "/Bells/**", "/timetabelbell/**", "/admin_main",
-                        "/admin_timetable")
+                        "/api/Users/**", "/api/Courses/**", "/api/Days/**", "/api/Bells/**", "/api/timetabelbell/**", "/admin_timetable", "/api/**")
                 .hasAuthority("ADMIN")
 
 
-                .antMatchers("/master_announcements/**", "/master_course/**", "/master_timetable/**")
+                .antMatchers("/master_main/**", "/master_course/**", "/master_timetable/**",
+                        "/api/MasterCourses/**", "/api/Announcements/**")
                 .hasAuthority("MASTER")
 
 
-                .antMatchers("/student_main/**","/student_choose/**","/api/TimeTableChoose/**")
+                .antMatchers("/student_main/**", "/student_choose/**", "/api/TimeTableChoose/**")
                 .hasAuthority("STUDENT")
 
 
@@ -67,16 +68,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        final CorsConfiguration configuration=new CorsConfiguration();
-        List<String>origins= Arrays.asList(new String[]{"*"});
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        List<String> origins = Arrays.asList(new String[]{"*"});
         configuration.setAllowedOrigins(origins);
-        configuration.setAllowedMethods(Arrays.asList(new String[]{"HEAD","GET","POST","PUT","DELETE","PATCH"}));
+        configuration.setAllowedMethods(Arrays.asList(new String[]{"HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"}));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList(new String[]{"Authorization", "Cache-Control", "Content-Type"}));
-        final UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
-        return  source;
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 

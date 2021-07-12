@@ -81,7 +81,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    /* use when try to find user by code in principal (spring.security) */
+    /* use when try to find user by email in principal (spring.security) */
     public User findByCode(String code){
         return userRepository.findByCode(code);
     }
