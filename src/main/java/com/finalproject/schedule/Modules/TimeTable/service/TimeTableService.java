@@ -45,17 +45,14 @@ public class TimeTableService {
     public void deleteById(int id){
         for (StudentCourse studentcourse:studentcourseRepository.findAll()){
             if(studentcourse.getTimetable() == timetableRepository.findById(id)){
-                System.out.println("timetable-if:1");
                 studentcourseRepository.deleteById(studentcourse.getId());
             }
         }
         for (Announce announce:announceRepository.findAll()){
             if(announce.getTimeTable() == timetableRepository.findById(id)){
-                System.out.println("timetable-if:2");
                 announceRepository.deleteById(announce.getId());
             }
         }
-        System.out.println("timetable-delete");
         timetableRepository.deleteById(id);
     }
 

@@ -1,16 +1,16 @@
 @font-face {
     font-family: IRANSansWeb;
-    src: url('fonts/IRANSansWeb.ttf') format('ttf');
+    src: url('fonts/IRANSansWeb.ttf');
 }
 
 @font-face {
     font-family: Kalameh;
-    src: url('fonts/Kalameh_regular.ttf') format('ttf');
+    src: url('fonts/Kalameh_Regular.ttf') ;
 }
 
 @font-face {
     font-family: Vazir;
-    src: url('fonts/Vazir.ttf') format('ttf');
+    src: url('fonts/Vazir.ttf');
 }
 
 :root {
@@ -1371,4 +1371,8 @@ select:after{
     background: #feffd4;
     border-radius: 6px;
     font-weight: 650;
+}
+
+.dark #announce{
+	color: #e0e0e0;
 }

@@ -34,12 +34,6 @@ public class StudentController {
         this.studentcourseService = studentcourseService;
     }
 
-    @RequestMapping(value = "/student_main")
-    public String student_main(Model model, Principal principal){
-        model.addAttribute("profile", userService.findByCode(principal.getName()));
-
-        return "student/student_main";
-    }
 
     @RequestMapping(value = "/student_choose", method = RequestMethod.GET)
     public String student_choose(Model model, Principal principal) {

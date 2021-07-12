@@ -20,6 +20,7 @@
     <script src="https://cdn.amcharts.com/lib/4/themes/frozen.js"></script>
 </head>
 <body class="overlay-scrollbar">
+<div id="site-landing"></div>
 <!-- navbar -->
 <div class="navbar">
     <!-- nav right -->
@@ -47,7 +48,7 @@
                             <div>
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span th:text="${'Email: ' + profile.getCode()}"></span>
+                            <span th:text="${'Code: ' + profile.getCode()}"></span>
                         </a>
                     </li>
                     <li class="dropdown-menu-item">
@@ -204,45 +205,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 col-m-12 col-sm-12">
-            <div class="card" dir="rtl">
-                <div class="card-header">
-                    <h3>
-                        تعداد دانشجو
-                    </h3>
-                    <i class="fas fa-print" onclick="printDiv()"></i>
-                    <i class="fas fa-file-csv" onclick="exportData()" style="margin-left: 30px;"></i>
-                </div>
-                <div class="card-content">
-                    <table id="myTable">
-                        <thead>
-                        <tr>
-                            <th>ردیف</th>
-                            <th>شماره درس</th>
-                            <th>نام درس</th>
-                            <th>نام استاد</th>
-                            <th>روز</th>
-                            <th>زنگ</th>
-                            <th>تعداد دانشجو دارای این درس</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="timetable,state : ${timetable_model}">
-                            <td th:text="${state.count}"/>
-                            <td th:text="${timetable.getCourse().getCourseNumber()}"/>
-                            <td th:text="${timetable.getCourse().getTitle()}"/>
-                            <td th:text="${timetable.getUser().getName() + ' ' + timetable.getUser().getLastname()}"/>
-                            <td th:text="${timetable.getTimetablebell().getDay().getLabel()}"/>
-                            <td th:text="${timetable.getTimetablebell().getBell().getLabel()}"/>
-                            <td th:text="${studentcourseService_model.findstudentnumber(timetable).size()}"/>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -448,6 +410,9 @@ chart.cursor.lineY.strokeOpacity = 0;
 
 }); // end am4core.ready()
 </script>
+<script src="js/jquery.min.js"></script>
+<script src="js/polygonizr.min.js"></script>
+<script src="js/backAnimation.js"></script>
 <!-- end import script -->
 </body>
 </html>

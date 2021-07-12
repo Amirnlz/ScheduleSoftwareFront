@@ -39,12 +39,6 @@ public class MasterController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/master_main")
-    public String master_main(Model model, Principal principal){
-        model.addAttribute("profile", userService.findByCode(principal.getName()));
-        return "master/master_main";
-    }
-
     @RequestMapping(value = "/master_course", method = RequestMethod.GET)
     public String course(Model model, Principal principal) {
         User user = userService.findByCode(principal.getName());

@@ -46,12 +46,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/Users/**", "/Courses/**", "/Days/**", "/Bells/**", "/timetabelbell/**", "/admin_main",
-                        "/api/Users/**", "/api/Courses/**", "/api/Days/**", "/api/Bells/**", "/api/timetabelbell/**","/admin_timetable","/api/**")
+                        "/admin_timetable")
                 .hasAuthority("ADMIN")
 
 
-                .antMatchers("/master_main/**", "/master_course/**", "/master_timetable/**",
-                        "/api/MasterCourses/**","/api/Announcements/**")
+                .antMatchers("/master_announcements/**", "/master_course/**", "/master_timetable/**")
                 .hasAuthority("MASTER")
 
 

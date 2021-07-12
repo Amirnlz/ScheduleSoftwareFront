@@ -51,7 +51,7 @@
                             <div>
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <span th:text="${'Email: ' + profile.getCode()}"></span>
+                            <span th:text="${'Code: ' + profile.getCode()}"></span>
                         </a>
                     </li>
                     <li class="dropdown-menu-item">
@@ -177,12 +177,14 @@
                     <h3>
                         لیست دروس
                     </h3>
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i class="fas fa-print" onclick="printDiv2()"></i>
+                    <i class="fas fa-file-csv" onclick="exportData2()" style="margin-left: 30px;"></i>
                 </div>
                 <div class="card-content">
                     <table id="myTable2">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>شناسه درس</th>
                             <th>شماره درس</th>
                             <th>نام درس</th>
@@ -197,7 +199,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="student_choose : ${student_choose_model}">
+                        <tr th:each="student_choose,state : ${student_choose_model}">
+                            <td th:text="${state.count}"></td>
                             <td th:text="${student_choose.getTimetable().getId()}"></td>
                             <td th:text="${student_choose.getTimetable().getCourse().getCourseNumber()}"></td>
                             <td th:text="${student_choose.getTimetable().getCourse().getTitle()}"></td>
@@ -245,6 +248,65 @@
 			}
 		  }
 		}
+
+		function printDiv2() {
+                var divToPrint=document.getElementById('myTable2');
+                newWin= window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+                }
+
+</script>
+<script>
+     function exportData2(){
+    var table = document.getElementById("myTable2");
+
+    var rows =[];
+
+
+    for(var i=0,row; row = table.rows[i];i++){
+
+        column1 = row.cells[1].innerText;
+        column2 = row.cells[2].innerText;
+        column3 = row.cells[3].innerText;
+        column4 = row.cells[4].innerText;
+        column5 = row.cells[5].innerText;
+        column6 = row.cells[6].innerText;
+        column7 = row.cells[7].innerText;
+        column8 = row.cells[8].innerText;
+        column9 = row.cells[9].innerText;
+        column10 = row.cells[10].innerText;
+
+        rows.push(
+            [
+                column1,
+                column2,
+                column3,
+                column4,
+                column5,
+                column6,
+                column7,
+                column8,
+                column9,
+                column10
+            ]
+        );
+
+        }
+        csvContent = "data:text/csv;charset=utf-8,";
+        rows.forEach(function(rowArray){
+            row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "Stock_Price_Report.csv");
+        document.body.appendChild(link);
+        link.click();
+}
 </script>
 <script src="js/jquery.min.js"></script>
 <script src="js/polygonizr.min.js"></script>

@@ -75,15 +75,6 @@ public class AdminMainController {
         model.addAttribute("students_in_panjshanbe", studentcourseService.findtimetablenumber("پنجشنبه").size());
         model.addAttribute("students_in_jome", studentcourseService.findtimetablenumber("جمعه").size());
 
-        List<TimeTable> timetableList = timetableService.findAllTimeTables();
-        List<TimeTable> temp = new ArrayList<>();
-        for (TimeTable timetable: timetableList){
-            if (timetable.getAcceptance() == 1){
-                temp.add(timetable);
-            }
-        }
-        model.addAttribute("timetable_model",temp);
-
         model.addAttribute("studentcourseService_model",studentcourseService);
         model.addAttribute("announce_model",announceService.findAllAnnounce());
 
